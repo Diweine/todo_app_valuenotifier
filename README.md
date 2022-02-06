@@ -1,6 +1,6 @@
 # Projeto Todo App (Flutter/Dart)
 
-O App foi construído com usando reatividade ValueNotifier e Dartion RESTful mini web server para simulação de API externa.
+O App foi construído usando reatividade ValueNotifier e Dartion RESTful mini web server para simulação de API externa.
 
 ## Telas Construídas
 
