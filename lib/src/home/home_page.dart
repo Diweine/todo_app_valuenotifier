@@ -15,6 +15,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final store = TaskStore(TaskService(Client()));
 
+  TextEditingController tasktitlecontroller = TextEditingController();
+  TextEditingController taskdescriptioncontroller = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -32,6 +35,108 @@ class _HomePageState extends State<HomePage> {
     Widget child = Container();
 
     final state = store.value;
+
+    _showAddTaskDialog(BuildContext context) => showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text("Nova Tarefa"),
+              content: SingleChildScrollView(
+                child: SizedBox(
+                  width: double.infinity,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextFormField(
+                        keyboardType: TextInputType.text,
+                        decoration: const InputDecoration(
+                          hintText: 'Tarefa',
+                        ),
+                        controller: tasktitlecontroller,
+                      ),
+                      TextFormField(
+                        keyboardType: TextInputType.text,
+                        decoration: const InputDecoration(
+                          hintText: 'Descrição',
+                        ),
+                        controller: taskdescriptioncontroller,
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              actions: [
+                ElevatedButton(
+                  child: const Text("Salvar"),
+                  onPressed: () {
+                    store.add(
+                      tasktitlecontroller.text,
+                      taskdescriptioncontroller.text,
+                    );
+                    Navigator.of(context).pop();
+                    tasktitlecontroller.text = "";
+                    taskdescriptioncontroller.text = "";
+                  },
+                ),
+              ],
+            );
+          },
+        );
+
+    _showUpdateTaskDialog(
+      String id,
+      String title,
+      String description,
+      bool status,
+    ) =>
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text("Alteração de Tarefa"),
+              content: SingleChildScrollView(
+                child: SizedBox(
+                  width: double.infinity,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextFormField(
+                        keyboardType: TextInputType.text,
+                        decoration: const InputDecoration(
+                          hintText: 'Tarefa',
+                        ),
+                        controller: tasktitlecontroller,
+                      ),
+                      TextFormField(
+                        keyboardType: TextInputType.text,
+                        decoration: const InputDecoration(
+                          hintText: 'Descrição',
+                        ),
+                        controller: taskdescriptioncontroller,
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              actions: [
+                ElevatedButton(
+                  child: const Text("Salvar"),
+                  onPressed: () {
+                    store.update(
+                      id,
+                      tasktitlecontroller.text,
+                      taskdescriptioncontroller.text,
+                      status,
+                    );
+                    Navigator.of(context).pop();
+                    tasktitlecontroller.text = "";
+                    taskdescriptioncontroller.text = "";
+                  },
+                ),
+              ],
+            );
+          },
+        );
 
     if (state is EmptyTaskState) {
       child = const Center(
@@ -66,7 +171,12 @@ class _HomePageState extends State<HomePage> {
                               ? Icons.check_circle
                               : Icons.circle_outlined,
                           color: AppColors.azul),
-                      onPressed: () => {},
+                      onPressed: () => store.update(
+                        task.id,
+                        task.title,
+                        task.description,
+                        !task.status,
+                      ),
                     ),
                   ),
                   title: Text(task.title),
@@ -77,11 +187,20 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         IconButton(
                           icon: const Icon(Icons.edit),
-                          onPressed: () => {},
+                          onPressed: () {
+                            _showUpdateTaskDialog(
+                              task.id,
+                              task.title,
+                              task.description,
+                              task.status,
+                            );
+                            tasktitlecontroller.text = task.title;
+                            taskdescriptioncontroller.text = task.description;
+                          },
                         ),
                         IconButton(
                           icon: const Icon(Icons.delete),
-                          onPressed: () => {},
+                          onPressed: () => store.delete(task.id),
                         ),
                       ],
                     ),
@@ -93,11 +212,29 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Center(child: Text('Lista de Tarefas')),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 15.0),
+            child: SizedBox(
+              width: 40.0,
+              child: ElevatedButton(
+                onPressed: store.fechTasks,
+                child: Icon(Icons.refresh_sharp, color: Colors.grey[700]),
+                style: ElevatedButton.styleFrom(
+                  shape: const CircleBorder(),
+                  padding: const EdgeInsets.all(5),
+                  primary: Colors.white, // <-- Button color
+                  onPrimary: Colors.red, // <-- Splash color
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       body: child,
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () => {},
+        onPressed: () => _showAddTaskDialog(context),
       ),
     );
   }

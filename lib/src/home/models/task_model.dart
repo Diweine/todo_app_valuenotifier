@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 class TaskModel {
-  final int id;
+  final String id;
   final String title;
   final String description;
   final bool status;
@@ -24,9 +24,9 @@ class TaskModel {
 
   factory TaskModel.fromMap(Map<String, dynamic> map) {
     return TaskModel(
-      id: map['id']?.toInt() ?? 0,
-      title: map['title'] ?? '',
-      description: map['description'] ?? '',
+      id: map['id'],
+      title: map['title'],
+      description: map['description'],
       status: map['status'] ?? false,
     );
   }
