@@ -1,17 +1,20 @@
-# todo_app_valuenotifier
+# Projeto Todo App (Flutter/Dart)
 
-A new Flutter project.
+O App foi construído com usando reatividade ValueNotifier e Dartion RESTful mini web server para simulação de API externa.
 
-## Getting Started
+## Telas Construídas
 
-This project is a starting point for a Flutter application.
+### - Listagem de Tarefas criadas
+<br/>
+<img src="./assets/img/home_page.png" alt="Print da tela lista de notas"/>
+<br/>
 
-A few resources to get you started if this is your first Flutter project:
+### - Criação de uma nova tarefa
+<br/>
+<img src="./assets/img/tela_nova_tarefa.png" alt="Print da tela lista de notas"/>
+<br/>
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# todo_app_valuenotifier
+### - Edição de Tarefas
+<br/>
+<img src="./assets/img/tela_edicao_tarefa.png" alt="Print da tela lista de notas"/>
+<br/>
