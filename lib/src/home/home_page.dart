@@ -234,7 +234,11 @@ class _HomePageState extends State<HomePage> {
       body: child,
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () => _showAddTaskDialog(context),
+        onPressed: () => {
+          tasktitlecontroller.text = "",
+          taskdescriptioncontroller.text = "",
+          _showAddTaskDialog(context)
+        },
       ),
     );
   }
